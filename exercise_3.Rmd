@@ -1,0 +1,17 @@
+---
+title: "R-Exercise Week 3, Segementation and Similarity "
+output: html_notebook
+---
+
+Task 1
+
+```{r}
+
+```
+
+Task 2
+
+```{r}
+
+```
+
