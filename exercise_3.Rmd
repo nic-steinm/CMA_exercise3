@@ -3,9 +3,48 @@ title: "R-Exercise Week 3, Segementation and Similarity "
 output: html_notebook
 ---
 
-Task 1
+Preparation
 
 ```{r}
+
+library(readr)        
+library(dplyr)        
+library(ggplot2)      
+library(sf)          
+library(terra)        
+library(lubridate)
+library(zoo)
+
+#reading in the data
+caro <- read_delim("data/caro60.txt", ",")
+
+#sampling interval is chosen to be 5 minutes.
+
+caro <- caro %>%
+  mutate(
+    n_minus2 = sqrt((lag(E,2)-E)^2+(lag(N,2)-N)^2), #distance to pos -2 minutes
+    n_minus1 = sqrt((lag(E,1)-E)^2+(lag(N,1)-N)^2),
+    n_plus1 = sqrt((E-lead(E,1))^2+(N-lead(N,1))^2),
+    n_plus2 = sqrt((E-lead(E,2))^2+(N-lead(N,2))^2)
+  ) %>%
+  
+  rowwise() %>%
+  
+  mutate(
+    stepMean = mean(c(n_minus2, n_minus1, n_plus1, n_plus2))
+  ) %>%
+  
+  ungroup()%>%
+  
+  mutate(static = stepMean < mean(stepMean, na.rm =TRUE)) #Assign boolean if the step-mean is below threshold (= mean of all stepmeans)
+
+caro_filtered <- caro %>%
+  filter(!static)
+
+ggplot(caro_filtered, aes(E,N))+
+  geom_path()+
+  geom_point()+
+  coord_fixed()
 
 ```
 
