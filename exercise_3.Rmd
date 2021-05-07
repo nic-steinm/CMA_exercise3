@@ -16,7 +16,7 @@ library(lubridate)
 library(zoo)
 
 #reading in the data
-caro <- read_delim("data/caro60.csv", ",")
+caro <- read_csv("data/caro60.csv")
 
 #sampling interval is chosen to be 5 minutes.
 
@@ -36,24 +36,36 @@ caro <- caro %>%
     stepMean = mean(c(n_minus2, n_minus1, n_minus3, n_plus1, n_plus2, n_plus3))
   ) %>%
   
-  ungroup()%>%
+  ungroup()
   
+```
+
+Task 2
+
+```{r}
+  
+hist(x = caro$stepMean, breaks = 60)
+boxplot(caro$stepMean)
+
+caro <- caro %>%
   mutate(static = stepMean < mean(stepMean, na.rm =TRUE)) #Assign boolean if the step-mean is below threshold (= mean of all stepmeans)
 
 caro_filtered <- caro %>%
   filter(!static)
+```
 
-ggplot(caro_filtered, aes(E,N))+
+Task 3
+```{r}
+ggplot(caro, aes(x = E, y = N, colour = static), alpha = 0.5)+
   geom_path()+
   geom_point()+
   coord_fixed()
 
 ```
 
-Task 2
+Task 3
 
 ```{r}
-
 
 
 
