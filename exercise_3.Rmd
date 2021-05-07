@@ -3,7 +3,7 @@ title: "R-Exercise Week 3, Segementation and Similarity "
 output: html_notebook
 ---
 
-Preparation
+Task 1:
 
 ```{r}
 
@@ -16,22 +16,24 @@ library(lubridate)
 library(zoo)
 
 #reading in the data
-caro <- read_delim("data/caro60.txt", ",")
+caro <- read_delim("data/caro60.csv", ",")
 
 #sampling interval is chosen to be 5 minutes.
 
 caro <- caro %>%
   mutate(
+    n_minus3 = sqrt((lag(E,3)-E)^2+(lag(N,3)-N)^2),
     n_minus2 = sqrt((lag(E,2)-E)^2+(lag(N,2)-N)^2), #distance to pos -2 minutes
     n_minus1 = sqrt((lag(E,1)-E)^2+(lag(N,1)-N)^2),
     n_plus1 = sqrt((E-lead(E,1))^2+(N-lead(N,1))^2),
-    n_plus2 = sqrt((E-lead(E,2))^2+(N-lead(N,2))^2)
+    n_plus2 = sqrt((E-lead(E,2))^2+(N-lead(N,2))^2),
+    n_plus3 = sqrt((E-lead(E,3))^2+(N-lead(N,3))^2)
   ) %>%
   
   rowwise() %>%
   
   mutate(
-    stepMean = mean(c(n_minus2, n_minus1, n_plus1, n_plus2))
+    stepMean = mean(c(n_minus2, n_minus1, n_minus3, n_plus1, n_plus2, n_plus3))
   ) %>%
   
   ungroup()%>%
@@ -51,6 +53,24 @@ ggplot(caro_filtered, aes(E,N))+
 Task 2
 
 ```{r}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```
 
