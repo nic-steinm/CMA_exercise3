@@ -105,5 +105,27 @@ ggplot(caro2, aes(x = E, y = N, colour = segment_id), alpha = 0.5)+
 Task 5
 ```{r}
 
+library(SimilarityMeasures)
+library(patchwork)
+
+pedestrian <- read_delim("data/pedestrian.txt", ",")
+
+ggplot(data = pedestrian, mapping = aes(E, N))+
+  geom_point(col = pedestrian$TrajID)+
+  geom_path(col = pedestrian$TrajID)+
+  facet_wrap(~TrajID, nrow = 2)
+  
+
+```
+Task 6
+
+```{r}
+E_coord <- pedestrian$E
+N_coord <- pedestrian$N
+
+matrix(c(E_coord, N_coord), length(N_coord))
+
+
+
 
 ```
