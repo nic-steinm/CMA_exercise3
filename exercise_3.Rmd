@@ -58,7 +58,7 @@ Task 3
 ggplot(caro, aes(x = E, y = N, colour = static), alpha = 0.5)+
   geom_path()+
   geom_point()+
-  coord_fixed()
+  coord_equal()
 
 ```
 
@@ -91,7 +91,7 @@ caro1 <- filter(caro, !static)
 caro2 <- filter(caro1, segment_time > 300)
   
 ggplot(caro1, aes(x = E, y = N, colour = segment_id), alpha = 0.5)+
-  labs(title = "Trajectories")+
+  labs(title = " All Trajectories")+
   geom_path()+
   geom_point()+
   coord_fixed()
@@ -120,6 +120,7 @@ ggplot(data = pedestrian, mapping = aes(E, N))+
 ```
 Task 6
 
+Tried piping commands for creating the matrix, but it wouldn't find the E and N columns when I used "append(E, N)" is there any sleeker way of doing this apart from creating a function?
 ```{r}
 
 #Preparing the matrices
@@ -167,7 +168,7 @@ frechet_dist <- Frechet(matrix1, matrix2)%>%
   append(Frechet(matrix1, matrix5))%>%
   append(Frechet(matrix1, matrix6))
 
-lcss_dist <- Frechet(matrix1, matrix2)%>%
+lcss_dist <- LCSS(matrix1, matrix2, 2, 2, 0.5)%>%
   append(LCSS(matrix1, matrix3, 2, 2, 0.5))%>%
   append(LCSS(matrix1, matrix4, 2, 2, 0.5))%>%
   append(LCSS(matrix1, matrix5, 2, 2, 0.5))%>%
@@ -175,6 +176,8 @@ lcss_dist <- Frechet(matrix1, matrix2)%>%
 ```
 
 Plotting 
+
+Something went wrong when trajectory 1 is compared with trajectory 2, but I'm a bit confused by my own code and don't know what went wrong :) 
 ```{r}
 #creating a dataframe with all the distances
 trajectories <- c("2","3","4","5","6")
